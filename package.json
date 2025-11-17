@@ -1,0 +1,12 @@
+{
+  "name": "dialogflow-hr-webhook",
+  "version": "1.0.0",
+  "description": "Fulfillment for Foster HR Chatbot on Vercel",
+  "main": "api/webhook.js",
+  "scripts": {
+    "start": "node api/webhook.js"
+  },
+  "dependencies": {
+    "actions-on-google": "^2.13.0"
+  }
+}

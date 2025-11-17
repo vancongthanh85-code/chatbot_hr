@@ -1,0 +1,36 @@
+{
+  "ThaiSan": {
+    "chu_de": "Trợ cấp Thai sản",
+    "muc_huong": "100% lương bình quân (LBQ) của 06 tháng đóng BHXH liền kề trước khi nghỉ.",
+    "thoi_gian_nghi": "Lao động nữ được nghỉ trước và sau khi sinh con là 06 tháng. Thời gian nghỉ trước khi sinh tối đa không quá 02 tháng.",
+    "dieu_kien_chung": "Đóng BHXH > 6 tháng trong vòng 12 tháng trước khi sinh con."
+  },
+  "OmDau": {
+    "chu_de": "Trợ cấp Ốm đau",
+    "muc_huong": "75% mức lương làm căn cứ đóng BHXH của tháng lương liền kề trước khi nghỉ.",
+    "thoi_gian_nghi": "Thời gian tối đa hưởng trợ cấp ốm đau trong một năm là 30 ngày (tham gia BHXH <15 năm), 40 ngày (15 đến < 30 năm), 60 ngày (>30 năm).",
+    "con_om_nghi": "Con dưới 3 tuổi: 20 ngày; Con từ 3 tuổi đến < 7 tuổi: 15 ngày."
+  },
+  "BHTN": {
+    "chu_de": "Bảo hiểm Thất nghiệp",
+    "muc_dong": "Người lao động đóng 1% lương đóng BHXH. Người sử dụng lao động đóng 1% lương đóng BHXH.",
+    "muc_huong": "60% mức lương bình quân tháng đóng BHTN 6 tháng liền kề trước khi thất nghiệp.",
+    "cong_don": "Thời gian hưởng trợ cấp thất nghiệp sẽ được cộng dồn nếu sau khi nghỉ công ty cũ bạn chưa hưởng."
+  },
+  "Luong": {
+    "chu_de": "Lương và Chấm Công",
+    "ngay_tra": "Lương sẽ được thanh toán/chuyển khoản vào ngày 5 Dương lịch mỗi tháng.",
+    "giu_luong": "Công ty không giữ lương 10 ngày. Khoảng thời gian từ 25 đến ngày 4 là thời gian cho phòng nhân sự kết công, tính lương.",
+    "thuong_cc_tru": "Thưởng chuyên cần bị trừ: Lần 1: 75.000đ; Lần 2: 150.000đ; Lần 3: 300.000đ."
+  },
+  "TNCN": {
+    "chu_de": "Thuế Thu nhập Cá nhân",
+    "giam_tru_ban_than": "Mức giảm trừ đối với bản thân là 15.500.000 đồng/người/tháng.",
+    "giam_tru_phu_thuoc": "Mức giảm trừ đối với người phụ thuộc là 6.200.000 đồng/người/tháng.",
+    "nguong_thue": "Thu nhập từ 15,5 triệu đồng trở lên đều phải chịu tính thuế TNCN."
+  },
+  "QuanLy": {
+    "chu_de": "Quản lý và Kỷ luật",
+    "phan_anh": "Công nhân có thể phản ánh lên cấp trên, bộ phận Quan hệ nhân viên – Phòng nhân sự, Công đoàn công ty, hoặc viết thư gửi vào hòm thư góp ý."
+  }
+}
