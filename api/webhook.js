@@ -1,7 +1,7 @@
-// Khai báo thư viện cần thiết cho Vercel/Dialogflow
+// Khai báo thư viện chính xác (đã sửa lỗi TypeError)
 const { WebhookClient } = require('dialogflow-fulfillment'); 
 
-// Tải file dữ liệu JSON của bạn (Đã kiểm tra cú pháp và đường dẫn)
+// Tải file dữ liệu JSON của bạn (đảm bảo đường dẫn chính xác)
 const HR_POLICIES = require('../data/hr_policies.json');
 
 // Hàm xử lý Intent chính (được gọi bởi Dialogflow)
