@@ -1,4 +1,4 @@
-// Khai báo thư viện chính xác (đã sửa lỗi TypeError)
+// Khai báo thư viện chính xác
 const { WebhookClient } = require('dialogflow-fulfillment'); 
 
 // Tải file dữ liệu JSON của bạn (Đã kiểm tra cú pháp và đường dẫn)
@@ -24,6 +24,12 @@ function handleHRQuery(agent) {
     policyKey = 'BHTN'; // Dùng BHTN cho tất cả các câu hỏi về BHXH/BHYT/BHTN
   } else if (rawPolicyName === 'giảm trừ gia cảnh' || rawPolicyName === 'mức giảm trừ' || rawPolicyName === 'thuế') {
     policyKey = 'TNCN';
+  } else if (rawPolicyName === 'atm' || rawPolicyName === 'mất thẻ' || rawPolicyName === 'nuốt thẻ') {
+    policyKey = 'ATM'; // Thêm mapping cho ATM
+  } else if (rawPolicyName === 'nghỉ việc' || rawPolicyName === 'thôi việc' || rawPolicyName === 'rút đơn') {
+    policyKey = 'ThoiViec'; // Thêm mapping cho Thôi việc
+  } else if (rawPolicyName === 'quản lý' || rawPolicyName === 'lời lẽ khó nghe') {
+    policyKey = 'QuanLy'; // Thêm mapping cho Quản lý
   }
   // --- KẾT THÚC LOGIC ÁNH XẠ ---
 
@@ -31,19 +37,18 @@ function handleHRQuery(agent) {
     const policyData = HR_POLICIES[policyKey];
 
     // --- LOGIC XỬ LÝ NGOẠI LỆ ĐẶC BIỆT: SINH CON THỨ BA (Q3) ---
-    // Phải kiểm tra trước các logic chung khác
     if (policyKey === 'ThaiSan' && rawQuery.includes('thứ ba')) {
         fulfillmentText = "Luật BHXH quy định không phân biệt nữ lao động sinh con lần thứ 1, 2, 3… nếu có đủ điều kiện (đóng BHXH từ đủ sáu tháng trở lên trong thời gian mười hai tháng trước khi sinh con) thì được hưởng chế độ thai sản.";
         agent.add(fulfillmentText);
-        return; // Dừng Webhook và gửi phản hồi
+        return; 
     }
     
-    // --- LOGIC PHÂN TÍCH NHU CẦU CHUNG (ĐÃ SỬA LỖI ƯU TIÊN DỮ LIỆU) ---
+    // --- LOGIC PHÂN TÍCH NHU CẦU CHUNG ---
     
     // 1. Phân tích MỨC HƯỞNG / MỨC ĐÓNG / PHẦN TRĂM
     if (rawQuery.includes('mức hưởng') || rawQuery.includes('bao nhiêu') || rawQuery.includes('mức đóng') || rawQuery.includes('phần trăm')) {
       
-      // FIX: Nếu hỏi về "đóng" hoặc "phần trăm", ưu tiên trả lời Mức đóng tổng thể (Q4)
+      // FIX LỖI Q4: Nếu hỏi về "đóng" hoặc "phần trăm", ưu tiên trả lời Mức đóng tổng thể
       if (rawQuery.includes('đóng') || rawQuery.includes('phần trăm') || rawQuery.includes('tổng')) {
           fulfillmentText = `Về ${policyData.chu_de}, mức đóng là: ${policyData.muc_dong || 'Không có thông tin về mức đóng.'}`;
       } else {
@@ -73,30 +78,49 @@ function handleDynamicFallback(agent) {
     let suggestions = [];
     
     // Logic 1: Kiểm tra từ khóa BHXH/Thai Sản
-    if (query.includes("thai sản") || query.includes("sinh con") || query.includes("nghỉ đẻ")) {
+    if (query.includes("thai sản") || query.includes("sinh con") || query.includes("nghỉ đẻ") || query.includes("thai")) {
         suggestions.push("Mức hưởng thai sản là bao nhiêu?");
         suggestions.push("Thời gian nghỉ thai sản là bao lâu?");
         suggestions.push("Điều kiện hưởng thai sản là gì?");
     }
     
-    // Logic 2: Kiểm tra từ khóa Lương/Chấm công
-    else if (query.includes("lương") || query.includes("tiền") || query.includes("trợ cấp") || query.includes("chấm công")) {
+    // Logic 2: Kiểm tra từ khóa Lương/Chấm công/Tiền bạc
+    if (query.includes("lương") || query.includes("tiền") || query.includes("trợ cấp") || query.includes("chấm công") || query.includes("tcc")) {
         suggestions.push("Công ty trả lương ngày nào?");
         suggestions.push("Thưởng chuyên cần bị trừ như thế nào?");
         suggestions.push("Các loại trợ cấp được tính như thế nào?");
-    } else {
-        // Gợi ý chung nếu không tìm thấy từ khóa nào liên quan
-        suggestions.push("1. Trợ cấp Thai sản");
-        suggestions.push("2. Trợ cấp Ốm đau");
-        suggestions.push("3. Quy định về Lương/Chấm công");
     }
+
+    // Logic 3: Kiểm tra từ khóa Thủ tục/Hồ sơ/Nghỉ việc
+    if (query.includes("thủ tục") || query.includes("hồ sơ") || query.includes("nghỉ việc") || query.includes("rút đơn")) {
+        suggestions.push("Thủ tục xin nghỉ việc cần làm gì?");
+        suggestions.push("Xin rút đơn thôi việc cần những thủ tục gì?");
+        suggestions.push("Vào ngày làm việc cuối cùng cần làm những thủ tục gì?");
+    }
+
+    // Logic 4: Kiểm tra từ khóa Thuế/Giảm trừ
+    if (query.includes("thuế") || query.includes("tncn") || query.includes("giảm trừ")) {
+        suggestions.push("Mức giảm trừ gia cảnh cho bản thân là bao nhiêu?");
+        suggestions.push("Thu nhập bao nhiêu thì phải đóng thuế TNCN?");
+        suggestions.push("Thủ tục đăng ký Mã số thuế TNCN?");
+    }
+    
+    // Logic 5: Kiểm tra từ khóa ATM/Thẻ
+    if (query.includes("atm") || query.includes("thẻ") || query.includes("mã pin")) {
+        suggestions.push("Thẻ ATM không kích hoạt được thì phải làm gì?");
+        suggestions.push("Nếu bị mất thẻ, nuốt thẻ, mất mã pin thì cần thủ tục gì?");
+        suggestions.push("Lương không vào tài khoản ATM thì phải làm gì?");
+    }
+
 
     let fulfillmentText;
     
     if (suggestions.length > 0) {
-        // SỬ DỤNG KÝ TỰ XUỐNG HÀNG (\n) VÀ JOIN ĐỂ TẠO CÁC DÒNG RIÊNG BIỆT
+        // Loại bỏ các gợi ý trùng lặp (nếu có)
+        const uniqueSuggestions = [...new Set(suggestions)];
+        
         fulfillmentText = "Xin lỗi, tôi chưa hiểu rõ ý bạn. Có phải bạn đang quan tâm đến các vấn đề sau không?\n\n";
-        fulfillmentText += suggestions.join('\n'); // Nối các gợi ý bằng ký tự xuống hàng
+        fulfillmentText += uniqueSuggestions.join('\n'); // Nối các gợi ý bằng ký tự xuống hàng
     } else {
         fulfillmentText = "Vui lòng hỏi rõ hơn về Thai sản, Ốm Đau, Lương, hay Thuế TNCN hoặc liên hệ Phòng Nhân sự.";
     }
